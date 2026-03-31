@@ -2,9 +2,9 @@
 The base repository for all of our code for our Project- PCMS(Professor Course Management System).
 
 # Contributers
-Cayla Chapman
-Shalini Daniel
-Edwin Estevez
+Cayla Chapman,
+Shalini Daniel,
+Edwin Estevez,
 Dorant Esty
 
 # Software Requirements Specification
