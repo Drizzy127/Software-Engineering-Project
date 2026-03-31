@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:controller="Controllers.ProfessorDashboardController"
+          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
+
+    <Button text="Go to Course View" fx:id="courseViewButton" onAction="#goToCourseView" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+
+</GridPane>
