@@ -1,27 +1,151 @@
 package Controllers;
 
+
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+public class ProfessorDashboardController {
 
-public class ProfessorDashboardController
-{
-    //WHAT I PUT IN THE CLASS IS JUST A PLACEHOLDER/TEMPLATE FOR THE CONTROLLERS, FEEL FREE TO CHANGE COMPLETELY
-    // UI elements from FXML
     @FXML
-    private Button myButton;
+    private VBox courseContainer;
 
     @FXML
-    private TextField myTextField;
+    private Label semesterLabel;
 
-    // Runs automatically when FXML loads
+    @FXML
+    private Label totalCoursesLabel;
+
+    @FXML
+    private void goToSocial(javafx.event.ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/SocialTabPage.fxml"));
+        Scene scene = new Scene(loader.load(), 1200, 800);
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
     @FXML
     public void initialize() {
-        // setup code here
+        semesterLabel.setText("Fall 2026");
+
+        addCourseCard(
+                "CSC 101 - Intro to CS",
+                "Fall 2026",
+                "Section 01",
+                35,
+                "Mon/Wed 10:00AM",
+                "Whitman 204",
+                "C",
+                "#7ed6d4"
+        );
+
+        addCourseCard(
+                "CSC 171 - Database Management",
+                "Fall 2026",
+                "Section 032",
+                25,
+                "Mon/Wed 12:15PM",
+                "Whitman 220",
+                "A+",
+                "#e68484"
+        );
+
+        addCourseCard(
+                "CSC 101 - Intro to CS",
+                "Fall 2026",
+                "Section 01",
+                35,
+                "Mon/Wed 10:00AM",
+                "Whitman 204",
+                "C",
+                "#d67adf"
+        );
+
+        totalCoursesLabel.setText(String.valueOf(courseContainer.getChildren().size()));
     }
 
-    // Event handler (button click, etc.)
-    @FXML
-    private void handleButtonClick() {
-        System.out.println("Clicked: " + myTextField.getText());
+    private void addCourseCard(String courseName,
+                               String semester,
+                               String section,
+                               int studentCount,
+                               String meetingTime,
+                               String room,
+                               String classAverage,
+                               String bgColor) {
+
+        HBox card = new HBox();
+        card.setPrefWidth(520);
+        card.setMinHeight(170);
+        card.setPadding(new Insets(18));
+        card.setSpacing(20);
+        card.setStyle(
+                "-fx-background-color: " + bgColor + ";" +
+                        "-fx-background-radius: 14;" +
+                        "-fx-border-radius: 14;" +
+                        "-fx-border-color: #444444;"
+        );
+
+        VBox leftSide = new VBox();
+        leftSide.setSpacing(6);
+        HBox.setHgrow(leftSide, Priority.ALWAYS);
+
+        Label titleLabel = new Label(courseName);
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
+
+        Label semesterSectionLabel = new Label(semester + " | " + section);
+        semesterSectionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: black;");
+
+        Label studentsLabel = new Label("Students: " + studentCount);
+        studentsLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+
+        Label timeLabel = new Label(meetingTime);
+        timeLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+
+        Label roomLabel = new Label("Room : " + room);
+        roomLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        Label avgLabel = new Label("Class Avg-" + classAverage);
+        avgLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+
+        leftSide.getChildren().addAll(
+                titleLabel,
+                semesterSectionLabel,
+                studentsLabel,
+                timeLabel,
+                roomLabel,
+                spacer,
+                avgLabel
+        );
+
+        StackPane buttonPane = new StackPane();
+        buttonPane.setPrefSize(120, 110);
+        buttonPane.setMaxSize(120, 110);
+        buttonPane.setStyle("-fx-background-color: #6f63ff;");
+
+        Button viewButton = new Button("View\nCourse");
+        viewButton.setWrapText(true);
+        viewButton.setTextFill(Color.WHITE);
+        viewButton.setStyle(
+                "-fx-background-color: transparent;" +
+                        "-fx-font-size: 16px;" +
+                        "-fx-font-family: 'Serif';"
+        );
+
+        viewButton.setOnAction(e -> System.out.println("Viewing course: " + courseName));
+        buttonPane.getChildren().add(viewButton);
+
+        card.getChildren().addAll(leftSide, buttonPane);
+        courseContainer.getChildren().add(card);
     }
-}
+
+    }
