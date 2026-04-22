@@ -2,12 +2,28 @@ package Views;
 
 public class ProfessorDashboard
 {
-    //DORANT ESTY
-    //show
-    //notifications aka recent activity
-    //social tab here <- professors within same department can share/chat/communicate
-            //can be flyout
-    //calendar of events
-    //Concise view of all current classes,times, and number of student within each class
-    // Shows
+    package Views;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class ProfessorDashboard extends Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("/Pages/ProfessorDashboardPage.fxml")
+        );
+
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
+        stage.setTitle("Professor Dashboard");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
