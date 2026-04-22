@@ -1,14 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controllers.ProfessorDashboardController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="800.0" prefWidth="1200.0"
+            style="-fx-background-color: #f3f3f3;">
+
+    <!-- Top black header -->
+    <HBox layoutX="0.0" layoutY="0.0" prefHeight="50.0" prefWidth="1200.0"
+          style="-fx-background-color: #1f1f1f;">
+        <children>
+            <Label text="Dashboard"
+                   style="-fx-text-fill: #7e7e7e; -fx-font-size: 20px; -fx-padding: 8 0 0 10;"/>
+        </children>
+    </HBox>
+
+    <!-- Left sidebar -->
+    <VBox layoutX="0.0" layoutY="50.0" prefHeight="750.0" prefWidth="210.0"
+          style="-fx-background-color: #d9d9d9;">
+        <children>
+            <Region prefHeight="220.0"/>
+            <Button text="Dashboard" prefWidth="160.0" prefHeight="40.0"
+                    style="-fx-background-color: transparent; -fx-text-fill: #b0a6a6; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+            <Button text="Social" prefWidth="160.0" prefHeight="40.0" onAction="#goToSocial"
+                    style="-fx-background-color: transparent; -fx-text-fill: #222222; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+
+            <Button text="Settings" prefWidth="160.0" prefHeight="40.0"
+                    style="-fx-background-color: transparent; -fx-text-fill: #222222; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+        </children>
+        <padding>
+            <Insets top="0" right="0" bottom="0" left="35"/>
+        </padding>
+    </VBox>
+
+    <!-- Welcome banner -->
+    <StackPane layoutX="420.0" layoutY="95.0" prefWidth="520.0" prefHeight="95.0"
+               style="-fx-background-color: #d9d9d9;">
+        <children>
+            <Label text="Welcome to your PCMS"
+                   style="-fx-font-size: 34px; -fx-text-fill: black;"/>
+        </children>
+    </StackPane>
+
+    <!-- Profile section -->
+    <VBox layoutX="1020.0" layoutY="90.0" alignment="TOP_CENTER" spacing="12.0">
+        <children>
+            <Circle radius="42.0" style="-fx-fill: #d9d9d9;"/>
+            <Label text="Profile Icon" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+            <Button text="Logout"
+                    style="-fx-background-color: transparent; -fx-font-size: 14px; -fx-text-fill: #333333;"/>
+        </children>
+    </VBox>
+
+    <!-- Professor dashboard title -->
+    <Label layoutX="250.0" layoutY="230.0" text="PROFESSOR DASHBOARD"
+           style="-fx-font-size: 22px; -fx-text-fill: #2d2d2d;"/>
+
+    <!-- Course card area -->
+    <ScrollPane layoutX="230.0" layoutY="270.0" prefWidth="560.0" prefHeight="470.0"
+                fitToWidth="true" hbarPolicy="NEVER"
+                style="-fx-background: transparent; -fx-background-color: transparent;">
+        <content>
+            <VBox fx:id="courseContainer" spacing="18.0" prefWidth="540.0"
+                  style="-fx-background-color: transparent; -fx-padding: 5;">
+            </VBox>
+        </content>
+    </ScrollPane>
+
+    <!-- Semester / total courses panel -->
+    <VBox layoutX="815.0" layoutY="280.0" prefWidth="300.0" prefHeight="175.0" spacing="18.0"
+          style="-fx-background-color: #d9d9d9; -fx-padding: 18;">
+        <children>
+            <Label text="Current Semester:" style="-fx-font-size: 18px; -fx-text-fill: #333333;"/>
+            <Label fx:id="semesterLabel" text="Fall 2026"
+                   style="-fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+            <Label text="Total Courses" style="-fx-font-size: 18px; -fx-text-fill: #333333;"/>
+            <Label fx:id="totalCoursesLabel" text="6"
+                   style="-fx-font-size: 44px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+        </children>
+    </VBox>
 
 </AnchorPane>
