@@ -8,13 +8,15 @@
       alignment="TOP_CENTER"
       style="-fx-background-color: #f4f6f8;"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="Controllers.CourseViewController">
+      fx:controller="Controllers.CourseViewController"
+      >
+
 
 
     <HBox alignment="CENTER_LEFT" spacing="10"
           style="-fx-padding: 15; -fx-background-color: #6f63ff;">
 
-        <Button text="← Back" onMouseClicked="#goBackMouse"/>
+        <Button text="Back" onAction="#goBackMouse"/>
 
         <Label text="Course Details"
                style="

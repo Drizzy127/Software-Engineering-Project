@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class CourseViewController {
 
     @FXML
@@ -59,24 +61,23 @@ public class CourseViewController {
         avgLabel.setText("Class Avg: " + course.getClassAverage());
     }
 
-    // attempt to add back button, needs debugging
+    // back button
     @FXML
-    private void goBackMouse(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/Pages/ProfessorDashboard.fxml")
-            );
+    private void goBackMouse(javafx.event.ActionEvent event) throws Exception {
 
-            Scene scene = new Scene(loader.load(), 1200, 800);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/ProfessorDashboardPage.fxml"));
 
-            Stage stage = (Stage) courseNameLabel.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+        Scene scene = new Scene(loader.load(), 1200, 800);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
+
+
+
+
+
 
 }
 
