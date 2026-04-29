@@ -1,13 +1,14 @@
 package Views;
 
-public class ProfessorDashboard
-{
-    package Views;
-
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.application.Application;
+
+
+
+
+
 
 public class ProfessorDashboard extends Application {
 
@@ -27,3 +28,4 @@ public class ProfessorDashboard extends Application {
         launch(args);
     }
 }
+

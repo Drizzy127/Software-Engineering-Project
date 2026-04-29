@@ -1,21 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<VBox spacing="10" alignment="CENTER"
+<VBox spacing="20"
+      alignment="TOP_CENTER"
+      style="-fx-background-color: #f4f6f8;"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="Controllers.CourseViewController">
 
 
-    <TableView fx:id="courseTable" prefWidth="400">
-        <columns>
-            <TableColumn fx:id="courseCodeColumn" text="Course Code" prefWidth="150"/>
-            <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="250"/>
-        </columns>
-    </TableView>
+    <HBox alignment="CENTER_LEFT" spacing="10"
+          style="-fx-padding: 15; -fx-background-color: #6f63ff;">
 
+        <Button text="← Back" onMouseClicked="#goBackMouse"/>
+
+        <Label text="Course Details"
+               style="
+                    -fx-text-fill: white;
+                    -fx-font-size: 20px;
+                    -fx-font-weight: bold;
+               "/>
+
+    </HBox>
+
+    <!--Course info card-->
+    <VBox spacing="12"
+          maxWidth="600"
+          style="
+                -fx-background-color: white;
+                -fx-padding: 25;
+                -fx-background-radius: 15;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 3);
+          ">
+
+        <Label fx:id="courseNameLabel"
+               style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
+        <Separator/>
+
+        <Label fx:id="semesterLabel" style="-fx-font-size: 14px;" />
+        <Label fx:id="sectionLabel" style="-fx-font-size: 14px;" />
+        <Label fx:id="studentsLabel" style="-fx-font-size: 14px;" />
+        <Label fx:id="timeLabel" style="-fx-font-size: 14px;" />
+        <Label fx:id="roomLabel" style="-fx-font-size: 14px;" />
+        <Label fx:id="avgLabel" style="-fx-font-size: 14px;" />
+
+    </VBox>
 
 </VBox>

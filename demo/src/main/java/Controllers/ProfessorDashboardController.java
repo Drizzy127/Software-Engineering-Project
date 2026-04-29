@@ -1,6 +1,7 @@
 package Controllers;
 
 
+import Models.Course;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -70,6 +71,7 @@ public class ProfessorDashboardController {
 
         totalCoursesLabel.setText(String.valueOf(courseContainer.getChildren().size()));
     }
+
 
     private void addCourseCard(String courseName,
                                String semester,
@@ -141,11 +143,62 @@ public class ProfessorDashboardController {
                         "-fx-font-family: 'Serif';"
         );
 
-        viewButton.setOnAction(e -> System.out.println("Viewing course: " + courseName));
+      //  viewButton.setOnAction(e -> openCourseView(e, courseName));
+        viewButton.setOnAction(e -> openCourseView(e,
+                courseName,
+                semester,
+                section,
+                studentCount,
+                meetingTime,
+                room,
+                classAverage,
+                bgColor
+        ));
         buttonPane.getChildren().add(viewButton);
 
         card.getChildren().addAll(leftSide, buttonPane);
         courseContainer.getChildren().add(card);
     }
+    private void openCourseView(javafx.event.ActionEvent event,
+                                String courseName,
+                                String semester,
+                                String section,
+                                int studentCount,
+                                String meetingTime,
+                                String room,
+                                String classAverage,
+                                String bgColor) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Pages/CourseViewPage.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 1200, 800);
+
+            Course course = new Course(
+                    courseName,
+                    courseName,
+                    semester,
+                    section,
+                    studentCount,
+                    meetingTime,
+                    room,
+                    classAverage
+            );
+
+            CourseViewController controller = loader.getController();
+            controller.setCourse(course);
+
+
+            Stage stage = (Stage) courseContainer.getScene().getWindow();
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     }

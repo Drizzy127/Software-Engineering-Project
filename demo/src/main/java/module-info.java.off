@@ -1,12 +1,18 @@
 module org.example.demo {
     requires javafx.controls;
     requires javafx.fxml;
-
     requires org.controlsfx.controls;
+    requires java.net.http;
+
+    requires com.google.auth;
+    requires com.google.auth.oauth2;
+
 
     exports Views;
     opens Views to javafx.fxml;
 
     exports Controllers;
     opens Controllers to javafx.fxml;
+
+    exports Services;
 }

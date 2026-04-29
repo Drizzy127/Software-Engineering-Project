@@ -1,66 +1,86 @@
 package Controllers;
 
 import Models.Course;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class CourseViewController {
 
     @FXML
-    private TableView<Course> courseTable;
-
+    private Label courseNameLabel;
     @FXML
-    private TableColumn<Course, String> courseCodeColumn;
-
+    private Label semesterLabel;
     @FXML
-    private TableColumn<Course, String> courseNameColumn;
+    private Label sectionLabel;
+    @FXML
+    private Label studentsLabel;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private Label roomLabel;
+    @FXML
+    private Label avgLabel;
 
-    private ObservableList<Course> courseList;
+    private Course course;
 
     @FXML
     public void initialize() {
 
-        courseCodeColumn.setCellValueFactory(data -> data.getValue().courseCodeProperty());
-        courseNameColumn.setCellValueFactory(data -> data.getValue().courseNameProperty());
-
-        courseList = FXCollections.observableArrayList(
-                new Course("CSC 101", "Intro to CS"),
-                new Course("CSC 202", "Data Structures"),
-                new Course("CSC 325", "Software Engineering")
-        );
-
-        courseTable.setItems(courseList);
-
-        //  working on a click to open students, needs debugging
-        courseTable.setRowFactory(tv -> {
-            TableRow<Course> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 1 && !row.isEmpty()) {
-                    openStudentView(row.getItem());
-                }
-            });
-            return row;
-        });
+        // keep empty unless needed
     }
 
-    private void openStudentView(Course course) {
+    // entry
+    public void setCourse(Course course) {
+        this.course = course;
+
+        if (course == null) {
+            System.out.println("Course is NULL");
+            return;
+        }
+
+        System.out.println("Course loaded: " + course.getCourseName());
+
+        if (courseNameLabel == null) {
+            System.out.println("FXML not wired properly (labels are null)");
+            return;
+        }
+
+        courseNameLabel.setText(course.getCourseName());
+        semesterLabel.setText(course.getSemester());
+        sectionLabel.setText(course.getSection());
+        studentsLabel.setText("Students: " + course.getStudentCount());
+        timeLabel.setText(course.getMeetingTime());
+        roomLabel.setText(course.getRoom());
+        avgLabel.setText("Class Avg: " + course.getClassAverage());
+    }
+
+    // attempt to add back button, needs debugging
+    @FXML
+    private void goBackMouse(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/StudentView.fxml"));
-            Scene scene = new Scene(loader.load());
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Pages/ProfessorDashboard.fxml")
+            );
 
-            StudentViewController controller = loader.getController();
-            controller.setCourse(course);
+            Scene scene = new Scene(loader.load(), 1200, 800);
 
-            Stage stage = (Stage) courseTable.getScene().getWindow();
+            Stage stage = (Stage) courseNameLabel.getScene().getWindow();
             stage.setScene(scene);
+            stage.show();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
+
+
+
+
+
