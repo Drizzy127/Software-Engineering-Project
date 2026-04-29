@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox spacing="10" alignment="CENTER"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.CourseViewController">
+
+
+    <TableView fx:id="courseTable" prefWidth="400">
+        <columns>
+            <TableColumn fx:id="courseCodeColumn" text="Course Code" prefWidth="150"/>
+            <TableColumn fx:id="courseNameColumn" text="Course Name" prefWidth="250"/>
+        </columns>
+    </TableView>
+
+
+</VBox>

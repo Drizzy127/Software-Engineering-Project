@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.SocialTabController"
+            prefHeight="800.0"
+            prefWidth="1200.0"
+            style="-fx-background-color: #f3f3f3;">
+
+    <!-- Top black bar -->
+    <HBox layoutX="0.0" layoutY="0.0"
+          prefHeight="50.0" prefWidth="1200.0"
+          style="-fx-background-color: #1f1f1f;">
+        <children>
+            <Label text="SocialTab"
+                   style="-fx-text-fill: #7e7e7e; -fx-font-size: 20px; -fx-padding: 8 0 0 10;"/>
+        </children>
+    </HBox>
+
+    <!-- Sidebar -->
+    <VBox layoutX="0.0" layoutY="50.0"
+          prefHeight="750.0" prefWidth="210.0"
+          style="-fx-background-color: #d9d9d9;">
+        <children>
+
+            <Region prefHeight="220.0"/>
+
+            <Button text="Dashboard"
+                    onAction="#goToDashboard"
+                    prefWidth="160.0" prefHeight="40.0"
+                    style="-fx-background-color: transparent;
+                           -fx-font-size: 16px;
+                           -fx-alignment: CENTER-LEFT;"/>
+
+            <Button text="Social"
+                    prefWidth="160.0" prefHeight="40.0"
+                    style="-fx-background-color: transparent;
+                           -fx-text-fill: #b0a6a6;
+                           -fx-font-size: 16px;
+                           -fx-alignment: CENTER-LEFT;"/>
+
+            <Button text="Settings"
+                    prefWidth="160.0" prefHeight="40.0"
+                    style="-fx-background-color: transparent;
+                           -fx-font-size: 16px;
+                           -fx-alignment: CENTER-LEFT;"/>
+
+        </children>
+
+        <padding>
+            <Insets left="35"/>
+        </padding>
+    </VBox>
+
+    <!-- Main Social Panel -->
+    <VBox layoutX="260.0" layoutY="100.0"
+          prefWidth="820.0" prefHeight="620.0"
+          spacing="0"
+          style="-fx-background-color: #c7d5c3;
+                 -fx-border-color: black;
+                 -fx-border-width: 4;
+                 -fx-background-radius: 20;
+                 -fx-border-radius: 20;">
+
+        <!-- Department Header -->
+        <VBox alignment="CENTER"
+              style="-fx-background-color: #62c66b;
+                     -fx-border-color: black;
+                     -fx-border-width: 0 0 3 0;
+                     -fx-padding: 15;">
+            <children>
+
+                <Label text="FSC PROUD"
+                       style="-fx-font-size: 20px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #1d4f1d;"/>
+
+                <Label text="Computer &amp; Information Systems Dept."
+                       style="-fx-font-size: 26px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #6b5cff;"/>
+
+            </children>
+        </VBox>
+
+        <!-- Feed -->
+        <ScrollPane fitToWidth="true"
+                    prefHeight="430.0"
+                    style="-fx-background-color: transparent;">
+            <content>
+
+                <VBox fx:id="feedContainer"
+                      spacing="5"
+                      style="-fx-padding: 15;"/>
+
+            </content>
+        </ScrollPane>
+
+        <!-- Post Input Area -->
+        <HBox spacing="15"
+              style="-fx-border-color: black;
+                     -fx-border-width: 3 0 0 0;
+                     -fx-padding: 15;">
+
+            <children>
+
+                <TextArea fx:id="postInput"
+                          promptText="Write a department update..."
+                          prefHeight="80"
+                          prefWidth="650"
+                          wrapText="true"/>
+
+                <Button text="Post"
+                        onAction="#handlePost"
+                        prefWidth="120"
+                        prefHeight="50"
+                        style="-fx-background-color: #49c98c;
+                               -fx-font-size: 18px;
+                               -fx-font-weight: bold;
+                               -fx-border-color: black;
+                               -fx-border-width: 3;"/>
+
+            </children>
+
+        </HBox>
+
+    </VBox>
+
+</AnchorPane>

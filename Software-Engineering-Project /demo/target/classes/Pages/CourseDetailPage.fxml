@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.CourseDetailController"
+            prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: white;">
+
+    <VBox layoutX="0" layoutY="0" prefWidth="210" prefHeight="800" style="-fx-background-color: #d9d9d9;">
+        <padding><Insets left="35"/></padding>
+        <children>
+            <Region prefHeight="190"/>
+            <Button text="Dashboard" onAction="#goToDashboard" prefWidth="160" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+            <Button text="Course" prefWidth="160" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-text-fill: #999999; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+            <Button text="Students" onAction="#openStudents" prefWidth="160" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+        </children>
+    </VBox>
+
+    <Label fx:id="titleLabel" layoutX="280" layoutY="85" prefWidth="840" alignment="CENTER"
+           style="-fx-font-size: 58px; -fx-font-weight: bold; -fx-text-fill: black;"/>
+
+    <VBox layoutX="300" layoutY="290" prefWidth="560" prefHeight="360"
+          style="-fx-background-color: #ffe1ad; -fx-padding: 25;">
+        <children>
+            <Label fx:id="descriptionLabel" wrapText="true" prefWidth="510"
+                   style="-fx-font-size: 28px; -fx-text-fill: black;"/>
+        </children>
+    </VBox>
+
+    <VBox layoutX="930" layoutY="290" prefWidth="250" prefHeight="360" spacing="25"
+          style="-fx-background-color: #bff8e7; -fx-padding: 25;">
+        <children>
+            <Label text="Course Meeting Times:" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Label fx:id="meetingLabel" style="-fx-font-size: 25px;"/>
+            <Label fx:id="roomLabel" style="-fx-font-size: 25px;"/>
+            <Label fx:id="semesterLabel" style="-fx-font-size: 25px;"/>
+            <Button text="Status:&#10;Active" onAction="#openStudents" prefWidth="150" prefHeight="90"
+                    style="-fx-background-color: #347d1e; -fx-text-fill: black; -fx-font-size: 24px;"/>
+        </children>
+    </VBox>
+</AnchorPane>

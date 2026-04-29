@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.StudentViewController"
+            prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: white;">
+
+    <VBox layoutX="0" layoutY="0" prefWidth="210" prefHeight="800" style="-fx-background-color: #d9d9d9;">
+        <padding><Insets left="35"/></padding>
+        <children>
+            <Region prefHeight="190"/>
+            <Button text="Dashboard" onAction="#goToDashboard" prefWidth="160" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+            <Button text="Grades" prefWidth="160" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+            <Button text="Students" prefWidth="160" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-text-fill: #999999; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+            <Button text="Settings" prefWidth="160" prefHeight="45"
+                    style="-fx-background-color: transparent; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
+        </children>
+    </VBox>
+
+    <VBox layoutX="330" layoutY="145" prefWidth="700" spacing="22" alignment="CENTER">
+        <children>
+            <Label fx:id="courseTitle" text="Course" style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+            <Label fx:id="meetingLabel" text="Meeting Time:" style="-fx-font-size: 16px;"/>
+            <Label text="Student" prefWidth="130" alignment="CENTER" style="-fx-background-color: #dddddd; -fx-font-size: 20px; -fx-padding: 8; -fx-background-radius: 5;"/>
+            <TableView fx:id="studentTable" prefWidth="670" prefHeight="280">
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="Name" prefWidth="180"/>
+                    <TableColumn fx:id="idColumn" text="StudentID" prefWidth="180"/>
+                    <TableColumn fx:id="gradeColumn" text="Grades" prefWidth="150"/>
+                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="160"/>
+                </columns>
+            </TableView>
+        </children>
+    </VBox>
+</AnchorPane>
