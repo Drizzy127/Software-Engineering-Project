@@ -1,31 +1,33 @@
 package Controllers;
 
+import Services.AppState;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class LogInController {
 
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Label messageLabel;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Label messageLabel;
 
     @FXML
     private void handleLogin() {
-        String username = usernameField.getText();
+        String username = usernameField.getText().trim();
         String password = passwordField.getText();
 
-        if (username.equals("admin") && password.equals("1234")) {
+        // Temporary local login for the GUI demo.
+        // This lets the dashboard and social tab work without Firebase/Firestore.
+        if (!username.isEmpty() && (password.equals("1234") || !password.isEmpty())) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/ProfessorDashboardPage.fxml"));
-                Scene scene = new Scene(loader.load());
+                AppState.setLoggedInEmail(username);
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/ProfessorDashboardPage.fxml"));
+                Scene scene = new Scene(loader.load(), 1200, 800);
                 Stage stage = (Stage) usernameField.getScene().getWindow();
                 stage.setScene(scene);
                 stage.setTitle("Professor Dashboard");
@@ -34,8 +36,7 @@ public class LogInController {
                 e.printStackTrace();
             }
         } else {
-            messageLabel.setText("Invalid credentials");
+            messageLabel.setText("Enter an email and password");
         }
     }
 }
-
