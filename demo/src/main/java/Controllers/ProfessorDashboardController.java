@@ -1,87 +1,48 @@
 package Controllers;
 
-
 import Models.Course;
+import Services.AppState;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 public class ProfessorDashboardController {
 
-    @FXML
-    private VBox courseContainer;
+    @FXML private VBox courseContainer;
+    @FXML private Label semesterLabel;
+    @FXML private Label totalCoursesLabel;
+    @FXML private Label emailLabel;
 
-    @FXML
-    private Label semesterLabel;
+    private final String[] cardColors = {"#7ed6d4", "#e68484", "#d67adf", "#b7e07c", "#f4c177", "#9bc2e6"};
 
-    @FXML
-    private Label totalCoursesLabel;
-
-    @FXML
-    private void goToSocial(javafx.event.ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/SocialTabPage.fxml"));
-        Scene scene = new Scene(loader.load(), 1200, 800);
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
-    }
     @FXML
     public void initialize() {
         semesterLabel.setText("Fall 2026");
-
-        addCourseCard(
-                "CSC 101 - Intro to CS",
-                "Fall 2026",
-                "Section 01",
-                35,
-                "Mon/Wed 10:00AM",
-                "Whitman 204",
-                "C",
-                "#7ed6d4"
-        );
-
-        addCourseCard(
-                "CSC 171 - Database Management",
-                "Fall 2026",
-                "Section 032",
-                25,
-                "Mon/Wed 12:15PM",
-                "Whitman 220",
-                "A+",
-                "#e68484"
-        );
-
-        addCourseCard(
-                "CSC 101 - Intro to CS",
-                "Fall 2026",
-                "Section 01",
-                35,
-                "Mon/Wed 10:00AM",
-                "Whitman 204",
-                "C",
-                "#d67adf"
-        );
-
-        totalCoursesLabel.setText(String.valueOf(courseContainer.getChildren().size()));
+        emailLabel.setText(AppState.getLoggedInEmail());
+        refreshCourses();
     }
 
+    private void refreshCourses() {
+        courseContainer.getChildren().clear();
 
-    private void addCourseCard(String courseName,
-                               String semester,
-                               String section,
-                               int studentCount,
-                               String meetingTime,
-                               String room,
-                               String classAverage,
-                               String bgColor) {
+        int index = 0;
+        for (Course course : AppState.getCourses()) {
+            addCourseCard(course, cardColors[index % cardColors.length]);
+            index++;
+        }
 
+        totalCoursesLabel.setText(String.valueOf(AppState.getCourses().size()));
+    }
+
+    private void addCourseCard(Course course, String bgColor) {
         HBox card = new HBox();
         card.setPrefWidth(520);
         card.setMinHeight(170);
@@ -98,107 +59,84 @@ public class ProfessorDashboardController {
         leftSide.setSpacing(6);
         HBox.setHgrow(leftSide, Priority.ALWAYS);
 
-        Label titleLabel = new Label(courseName);
+        Label titleLabel = new Label(course.getCourseCode() + " - " + course.getCourseName());
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;");
 
-        Label semesterSectionLabel = new Label(semester + " | " + section);
+        Label semesterSectionLabel = new Label(course.getSemester() + " | " + course.getSection());
         semesterSectionLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: black;");
 
-        Label studentsLabel = new Label("Students: " + studentCount);
+        Label studentsLabel = new Label("Students: " + course.getStudentCount());
         studentsLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
 
-        Label timeLabel = new Label(meetingTime);
+        Label timeLabel = new Label(course.getMeetingTime());
         timeLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
 
-        Label roomLabel = new Label("Room : " + room);
+        Label roomLabel = new Label("Room : " + course.getRoom());
         roomLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
 
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        Label avgLabel = new Label("Class Avg-" + classAverage);
+        Label avgLabel = new Label("Class Avg-" + course.getClassAverage());
         avgLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
 
-        leftSide.getChildren().addAll(
-                titleLabel,
-                semesterSectionLabel,
-                studentsLabel,
-                timeLabel,
-                roomLabel,
-                spacer,
-                avgLabel
-        );
+        leftSide.getChildren().addAll(titleLabel, semesterSectionLabel, studentsLabel, timeLabel, roomLabel, spacer, avgLabel);
 
-        StackPane buttonPane = new StackPane();
-        buttonPane.setPrefSize(120, 110);
-        buttonPane.setMaxSize(120, 110);
-        buttonPane.setStyle("-fx-background-color: #6f63ff;");
+        VBox rightSide = new VBox();
+        rightSide.setSpacing(10);
+        rightSide.setPrefWidth(120);
 
         Button viewButton = new Button("View\nCourse");
         viewButton.setWrapText(true);
         viewButton.setTextFill(Color.WHITE);
-        viewButton.setStyle(
-                "-fx-background-color: transparent;" +
-                        "-fx-font-size: 16px;" +
-                        "-fx-font-family: 'Serif';"
-        );
+        viewButton.setPrefSize(120, 80);
+        viewButton.setStyle("-fx-background-color: #6f63ff; -fx-font-size: 16px; -fx-font-family: 'Serif';");
+        viewButton.setOnAction(e -> openCourseView(course));
 
-      //  viewButton.setOnAction(e -> openCourseView(e, courseName));
-        viewButton.setOnAction(e -> openCourseView(e,
-                courseName,
-                semester,
-                section,
-                studentCount,
-                meetingTime,
-                room,
-                classAverage,
-                bgColor
-        ));
-        buttonPane.getChildren().add(viewButton);
+        Button removeButton = new Button("Remove");
+        removeButton.setPrefSize(120, 35);
+        removeButton.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 14px;");
+        removeButton.setOnAction(e -> {
+            AppState.removeCourse(course);
+            refreshCourses();
+        });
 
-        card.getChildren().addAll(leftSide, buttonPane);
+        rightSide.getChildren().addAll(viewButton, removeButton);
+        card.getChildren().addAll(leftSide, rightSide);
         courseContainer.getChildren().add(card);
     }
-    private void openCourseView(javafx.event.ActionEvent event,
-                                String courseName,
-                                String semester,
-                                String section,
-                                int studentCount,
-                                String meetingTime,
-                                String room,
-                                String classAverage,
-                                String bgColor) {
+
+    private void openCourseView(Course course) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/Pages/CourseViewPage.fxml")
-            );
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/CourseViewPage.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 800);
-
-            Course course = new Course(
-                    courseName,
-                    courseName,
-                    semester,
-                    section,
-                    studentCount,
-                    meetingTime,
-                    room,
-                    classAverage
-            );
 
             CourseViewController controller = loader.getController();
             controller.setCourse(course);
 
-
             Stage stage = (Stage) courseContainer.getScene().getWindow();
-
             stage.setScene(scene);
             stage.show();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-
+    @FXML
+    private void goToAddCourse(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/AddCoursePage.fxml"));
+        Scene scene = new Scene(loader.load(), 1200, 800);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
+
+    @FXML
+    private void goToSocial(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/SocialTabPage.fxml"));
+        Scene scene = new Scene(loader.load(), 1200, 800);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+}
