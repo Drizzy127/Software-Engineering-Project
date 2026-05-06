@@ -28,6 +28,11 @@ public class StudentViewController {
     }
 
     @FXML
+    private void saveAll() {
+        System.out.println("Save All clicked");
+    }
+
+    @FXML
     private void saveName() {
         student.setName(
                 firstNameField.getText().trim() + " " +

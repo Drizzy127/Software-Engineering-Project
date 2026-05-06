@@ -32,6 +32,7 @@ public class CourseViewController {
 
     @FXML
     public void initialize() {
+
     }
 
     public void setCourse(Course course) {
@@ -72,9 +73,14 @@ public class CourseViewController {
 
         courseContainer.getChildren().clear();
 
+
         for (Student student : course.getStudents()) {
 
             HBox row = new HBox(15);
+
+
+            row.setStyle("-fx-padding: 10; -fx-background-color: white;");
+            row.setPickOnBounds(true);
 
             Label nameLabel = new Label(
                     student.getFirstName() + " " + student.getLastName()
@@ -86,11 +92,22 @@ public class CourseViewController {
                     )
             );
 
+            //debugging line
+            row.setOnMouseClicked(e -> {
+                System.out.println("CLICK WORKS");
+                openStudentView(student);
+            });
+
+
             row.setOnMouseClicked(e -> openStudentView(student));
+            nameLabel.setOnMouseClicked(e -> openStudentView(student));
+            avgLabel.setOnMouseClicked(e -> openStudentView(student));
 
             row.getChildren().addAll(nameLabel, avgLabel);
             courseContainer.getChildren().add(row);
         }
+
+
     }
 
     private void openStudentView(Student student) {
