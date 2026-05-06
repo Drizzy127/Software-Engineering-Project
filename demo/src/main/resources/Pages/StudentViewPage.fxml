@@ -3,11 +3,93 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10" alignment="CENTER"
+<VBox spacing="0"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="Controllers.StudentViewController">
+      fx:controller="Controllers.StudentViewController"
+      style="-fx-background-color: #f4f6f8;">
 
-    <Label fx:id="courseTitle" />
-    <ListView fx:id="studentList" prefWidth="300"/>
+    <HBox alignment="CENTER_LEFT"
+          spacing="15"
+          style="-fx-padding: 18; -fx-background-color: #6f63ff;">
+
+        <Label text="Student Profile"
+               style="-fx-text-fill: white;
+                      -fx-font-size: 20px;
+                      -fx-font-weight: bold;" />
+    </HBox>
+
+    <HBox spacing="20" style="-fx-padding: 20;">
+
+        <VBox spacing="15"
+              prefWidth="320"
+              style="-fx-background-color: white;
+                     -fx-padding: 20;
+                     -fx-background-radius: 15;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.2, 0, 3);">
+
+            <Label text="Student Information"
+                   style="-fx-font-size: 16px;
+                          -fx-font-weight: bold;" />
+
+            <Separator/>
+
+            <Label text="First Name" />
+            <TextField fx:id="firstNameField" promptText="First name"/>
+
+            <Label text="Last Name" />
+            <TextField fx:id="lastNameField" promptText="Last name"/>
+
+            <Button text="Save Name"
+                    onAction="#saveName"
+                    style="-fx-background-color: #6f63ff;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;" />
+
+            <Button text="Save Changes"
+                    onAction="#saveAll"
+                    style="-fx-background-color: #2ecc71;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;" />
+
+            <Separator/>
+
+            <Label fx:id="averageLabel"
+                   style="-fx-font-size: 14px;
+                          -fx-font-weight: bold;" />
+
+        </VBox>
+
+        <VBox spacing="15"
+              HBox.hgrow="ALWAYS"
+              style="-fx-background-color: white;
+                     -fx-padding: 20;
+                     -fx-background-radius: 15;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.2, 0, 3);">
+
+            <Label text="Grades"
+                   style="-fx-font-size: 16px;
+                          -fx-font-weight: bold;" />
+
+            <Separator/>
+
+            <Button text="Add Grade"
+                    onAction="#addGrade"
+                    style="-fx-background-color: #6f63ff;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;" />
+
+            <ScrollPane fitToWidth="true"
+                        style="-fx-background-color: transparent; -fx-background-insets: 0;"
+                        VBox.vgrow="ALWAYS">
+
+                <VBox fx:id="gradeContainer"
+                      spacing="8"
+                      style="-fx-padding: 10;" />
+
+            </ScrollPane>
+
+        </VBox>
+
+    </HBox>
 
 </VBox>

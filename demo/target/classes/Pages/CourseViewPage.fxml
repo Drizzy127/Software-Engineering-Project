@@ -1,54 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="20"
-      alignment="TOP_CENTER"
-      style="-fx-background-color: #f4f6f8;"
+<VBox spacing="0"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="Controllers.CourseViewController"
-      >
+      style="-fx-background-color: #f4f6f8;">
 
+    <!-- TOP BAR -->
+    <HBox alignment="CENTER_LEFT"
+          spacing="15"
+          style="-fx-padding: 18; -fx-background-color: #6f63ff;">
 
-
-    <HBox alignment="CENTER_LEFT" spacing="10"
-          style="-fx-padding: 15; -fx-background-color: #6f63ff;">
-
-        <Button text="Back" onAction="#goBackMouse"/>
+        <Button text="← Back"
+                onAction="#goBackMouse"
+                style="-fx-background-color: white;
+                       -fx-text-fill: #6f63ff;
+                       -fx-font-weight: bold;
+                       -fx-padding: 8 16 8 16;
+                       -fx-background-radius: 8;" />
 
         <Label text="Course Details"
-               style="
-                    -fx-text-fill: white;
-                    -fx-font-size: 20px;
-                    -fx-font-weight: bold;
-               "/>
-
+               style="-fx-text-fill: white;
+                      -fx-font-size: 22px;
+                      -fx-font-weight: bold;" />
     </HBox>
 
-    <!--Course info card-->
-    <VBox spacing="12"
-          maxWidth="600"
-          style="
-                -fx-background-color: white;
-                -fx-padding: 25;
-                -fx-background-radius: 15;
-                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 3);
-          ">
+    <!-- MAIN CONTENT AREA -->
+    <HBox spacing="20" style="-fx-padding: 20;">
 
-        <Label fx:id="courseNameLabel"
-               style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+        <!-- LEFT SIDE -->
+        <VBox spacing="20" HBox.hgrow="ALWAYS">
 
-        <Separator/>
+            <!-- COURSE INFO CARD -->
+            <VBox spacing="12"
+                  style="-fx-background-color: white;
+                         -fx-padding: 28;
+                         -fx-background-radius: 18;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0.2, 0, 4);">
 
-        <Label fx:id="semesterLabel" style="-fx-font-size: 14px;" />
-        <Label fx:id="sectionLabel" style="-fx-font-size: 14px;" />
-        <Label fx:id="studentsLabel" style="-fx-font-size: 14px;" />
-        <Label fx:id="timeLabel" style="-fx-font-size: 14px;" />
-        <Label fx:id="roomLabel" style="-fx-font-size: 14px;" />
-        <Label fx:id="avgLabel" style="-fx-font-size: 14px;" />
+                <Label fx:id="courseNameLabel"
+                       style="-fx-font-size: 26px; -fx-font-weight: bold;" />
 
-    </VBox>
+                <Separator/>
+
+                <Label fx:id="semesterLabel" />
+                <Label fx:id="sectionLabel" />
+                <Label fx:id="studentsLabel" />
+                <Label fx:id="timeLabel" />
+                <Label fx:id="roomLabel" />
+
+                <Label fx:id="avgLabel"
+                       style="-fx-font-size: 15px;
+                              -fx-font-weight: bold;
+                              -fx-text-fill: #333;" />
+            </VBox>
+
+            <!-- STUDENT ROSTER -->
+            <VBox spacing="12"
+                  style="-fx-background-color: white;
+                         -fx-padding: 22;
+                         -fx-background-radius: 18;
+                         -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.2, 0, 3);">
+
+                <Label text="Student Roster"
+                       style="-fx-font-size: 18px;
+                              -fx-font-weight: bold;" />
+
+                <Separator/>
+
+                <ScrollPane fitToWidth="true"
+                            prefViewportHeight="350"
+                            style="-fx-background-color: transparent; -fx-background-insets: 0;">
+
+                    <VBox fx:id="courseContainer"
+                          spacing="10"
+                          style="-fx-padding: 8;" />
+
+                </ScrollPane>
+
+            </VBox>
+
+        </VBox>
+
+        <!-- RIGHT SIDE: GRADE WEIGHTS PANEL -->
+        <VBox spacing="12"
+              prefWidth="260"
+              style="-fx-background-color: white;
+                     -fx-padding: 20;
+                     -fx-background-radius: 15;
+                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 3);">
+
+            <Label text="Grade Weights"
+                   style="-fx-font-size: 16px;
+                          -fx-font-weight: bold;" />
+
+            <Label text="Quiz %" />
+            <TextField fx:id="quizWeightField" />
+
+            <Label text="Tests %" />
+            <TextField fx:id="testWeightField" />
+
+            <Label text="Assignments %" />
+            <TextField fx:id="assignmentWeightField" />
+
+            <Label text="Participation %" />
+            <TextField fx:id="participationWeightField" />
+
+            <Button text="Apply Weights"
+                    onAction="#applyWeights"
+                    style="-fx-background-color: #6f63ff;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;" />
+
+        </VBox>
+
+    </HBox>
 
 </VBox>

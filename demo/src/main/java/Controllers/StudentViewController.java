@@ -2,57 +2,86 @@ package Controllers;
 
 import Models.Course;
 import Models.Student;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import Models.Grade;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 public class StudentViewController {
 
-    @FXML
-    private Label courseTitle;
+    @FXML private TextField firstNameField;
+    @FXML private TextField lastNameField;
 
-    @FXML
-    private ListView<Student> studentList;
+    @FXML private VBox gradeContainer;
+    @FXML private Label averageLabel;
 
-    private ObservableList<Student> students = FXCollections.observableArrayList();
+    private Student student;
+    private Course course;
 
-    @FXML
-    public void initialize() {
-        studentList.setItems(students);
+    public void setStudent(Student student) {
+        this.student = student;
+
+        firstNameField.setText(student.getFirstName());
+        lastNameField.setText(student.getLastName());
+
+        refreshGrades();
     }
 
-    public void setCourse(Course course) {
+    @FXML
+    private void saveName() {
+        student.setName(
+                firstNameField.getText().trim() + " " +
+                        lastNameField.getText().trim()
+        );
+    }
 
-        courseTitle.setText(course.getCourseCode() + " - " + course.getCourseName());
+    @FXML
+    private void addGrade() {
 
-        students.clear();
+        ChoiceDialog<String> typeDialog =
+                new ChoiceDialog<>("Quiz", "Quiz", "Assignment", "Test", "Participation");
 
-        switch (course.getCourseCode()) {
-            case "CSC 101":
-                students.addAll(
-                        new Student("Alice"),
-                        new Student("Bob"),
-                        new Student("Charlie")
-                );
-                break;
+        typeDialog.setHeaderText("Select grade type");
 
-            case "CSC 202":
-                students.addAll(
-                        new Student("David"),
-                        new Student("Emma"),
-                        new Student("Frank")
-                );
-                break;
+        typeDialog.showAndWait().ifPresent(type -> {
 
-            case "CSC 325":
-                students.addAll(
-                        new Student("Grace"),
-                        new Student("Henry"),
-                        new Student("Isabella")
-                );
-                break;
+            TextInputDialog inputDialog = new TextInputDialog();
+            inputDialog.setHeaderText("Enter " + type + " score");
+
+            inputDialog.showAndWait().ifPresent(input -> {
+                try {
+                    double score = Double.parseDouble(input);
+
+                    if (type.equals("Participation")) {
+                        student.setParticipation(score);
+                    } else {
+                        student.addGrade(type, score);
+                    }
+
+                    refreshGrades();
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid score");
+                }
+            });
+        });
+    }
+
+    private void refreshGrades() {
+
+        gradeContainer.getChildren().clear();
+
+        for (Grade g : student.getGrades()) {
+
+            Label label = new Label(
+                    g.getType() + ": " + g.getScore()
+            );
+
+            gradeContainer.getChildren().add(label);
         }
+
+        averageLabel.setText(
+                "Average: " + String.format("%.2f", student.getRawAverage())
+        );
     }
 }

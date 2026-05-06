@@ -59,6 +59,8 @@
         <children>
             <Circle radius="42.0" style="-fx-fill: #d9d9d9;"/>
             <Label text="Profile Icon" style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+            <Label fx:id="emailLabel" text="professor@email.com" wrapText="true" maxWidth="150" alignment="CENTER"
+                   style="-fx-font-size: 13px; -fx-text-fill: #333333;"/>
             <Button text="Logout"
                     style="-fx-background-color: transparent; -fx-font-size: 14px; -fx-text-fill: #333333;"/>
         </children>
@@ -67,6 +69,9 @@
     <!-- Professor dashboard title -->
     <Label layoutX="250.0" layoutY="230.0" text="PROFESSOR DASHBOARD"
            style="-fx-font-size: 22px; -fx-text-fill: #2d2d2d;"/>
+
+    <Button layoutX="670.0" layoutY="225.0" text="+ Add Class" onAction="#goToAddCourse"
+            style="-fx-background-color: #49c98c; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;"/>
 
     <!-- Course card area -->
     <ScrollPane layoutX="230.0" layoutY="270.0" prefWidth="560.0" prefHeight="470.0"

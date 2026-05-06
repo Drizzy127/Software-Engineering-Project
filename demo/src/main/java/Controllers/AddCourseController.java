@@ -41,12 +41,14 @@ public class AddCourseController {
             }
 
             int students = Integer.parseInt(studentsField.getText().trim());
-            if (average.isEmpty()) {
-                average = "N/A";
-            }
+            //average nullified without grade input
+            //String average = "0";
 
             Course course = new Course(code, name, semester, section, students, meeting, room, average);
+            course.updateClassAverage();
+
             AppState.addCourse(course);
+
             goToDashboard(event);
         } catch (NumberFormatException ex) {
             errorLabel.setText("Students must be a number.");
@@ -64,4 +66,5 @@ public class AddCourseController {
         stage.setScene(scene);
         stage.show();
     }
+
 }

@@ -1,54 +1,44 @@
 package Controllers;
 
 import Models.Course;
+import Models.Student;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class CourseViewController {
 
-    @FXML
-    private Label courseNameLabel;
-    @FXML
-    private Label semesterLabel;
-    @FXML
-    private Label sectionLabel;
-    @FXML
-    private Label studentsLabel;
-    @FXML
-    private Label timeLabel;
-    @FXML
-    private Label roomLabel;
-    @FXML
-    private Label avgLabel;
+    @FXML private Label courseNameLabel;
+    @FXML private Label semesterLabel;
+    @FXML private Label sectionLabel;
+    @FXML private Label studentsLabel;
+    @FXML private Label timeLabel;
+    @FXML private Label roomLabel;
+    @FXML private Label avgLabel;
+    @FXML private VBox courseContainer;
+
+    @FXML private TextField quizWeightField;
+    @FXML private TextField testWeightField;
+    @FXML private TextField assignmentWeightField;
+    @FXML private TextField participationWeightField;
 
     private Course course;
 
     @FXML
     public void initialize() {
-
-        // keep empty unless needed
     }
 
-    // entry
     public void setCourse(Course course) {
         this.course = course;
 
         if (course == null) {
             System.out.println("Course is NULL");
-            return;
-        }
-
-        System.out.println("Course loaded: " + course.getCourseName());
-
-        if (courseNameLabel == null) {
-            System.out.println("FXML not wired properly (labels are null)");
             return;
         }
 
@@ -59,11 +49,73 @@ public class CourseViewController {
         timeLabel.setText(course.getMeetingTime());
         roomLabel.setText(course.getRoom());
         avgLabel.setText("Class Avg: " + course.getClassAverage());
+
+        showRoster(course);
     }
 
-    // back button
     @FXML
-    private void goBackMouse(javafx.event.ActionEvent event) throws Exception {
+    private void applyWeights() {
+        try {
+            course.setQuizWeight(Double.parseDouble(quizWeightField.getText()));
+            course.setTestWeight(Double.parseDouble(testWeightField.getText()));
+            course.setAssignmentWeight(Double.parseDouble(assignmentWeightField.getText()));
+            course.setParticipationWeight(Double.parseDouble(participationWeightField.getText()));
+
+            setCourse(course);
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid weight input");
+        }
+    }
+
+    private void showRoster(Course course) {
+
+        courseContainer.getChildren().clear();
+
+        for (Student student : course.getStudents()) {
+
+            HBox row = new HBox(15);
+
+            Label nameLabel = new Label(
+                    student.getFirstName() + " " + student.getLastName()
+            );
+
+            Label avgLabel = new Label(
+                    "Avg: " + String.format("%.1f",
+                            course.calculateStudentWeightedAverage(student)
+                    )
+            );
+
+            row.setOnMouseClicked(e -> openStudentView(student));
+
+            row.getChildren().addAll(nameLabel, avgLabel);
+            courseContainer.getChildren().add(row);
+        }
+    }
+
+    private void openStudentView(Student student) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/Pages/StudentViewPage.fxml")
+            );
+
+            Scene scene = new Scene(loader.load(), 900, 600);
+
+            StudentViewController controller = loader.getController();
+            controller.setStudent(student);
+
+            Stage stage = (Stage) courseNameLabel.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Student Profile");
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void goBackMouse(ActionEvent event) throws Exception {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/ProfessorDashboardPage.fxml"));
 
@@ -73,15 +125,4 @@ public class CourseViewController {
         stage.setScene(scene);
         stage.show();
     }
-
-
-
-
-
-
 }
-
-
-
-
-
