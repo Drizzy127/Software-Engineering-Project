@@ -8,7 +8,7 @@
       fx:controller="Controllers.CourseViewController"
       style="-fx-background-color: #f4f6f8;">
 
-    <!-- TOP BAR -->
+
     <HBox alignment="CENTER_LEFT"
           spacing="15"
           style="-fx-padding: 18; -fx-background-color: #6f63ff;">
@@ -57,7 +57,7 @@
                               -fx-text-fill: #333;" />
             </VBox>
 
-            <!-- STUDENT ROSTER -->
+
             <VBox spacing="12"
                   style="-fx-background-color: white;
                          -fx-padding: 22;
@@ -84,7 +84,7 @@
 
         </VBox>
 
-        <!-- RIGHT SIDE: GRADE WEIGHTS PANEL -->
+
         <VBox spacing="12"
               prefWidth="260"
               style="-fx-background-color: white;
@@ -95,6 +95,11 @@
             <Label text="Grade Weights"
                    style="-fx-font-size: 16px;
                           -fx-font-weight: bold;" />
+
+
+            <Label text="Enter as decimals (example: 0.20 = 20%)"
+                   style="-fx-font-size: 12px;
+                          -fx-text-fill: #666;" />
 
             <Label text="Quiz %" />
             <TextField fx:id="quizWeightField" />

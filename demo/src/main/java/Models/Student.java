@@ -8,7 +8,6 @@ public class Student {
     private String firstName;
     private String lastName;
 
-    // stores structured grades
     private List<Grade> grades = new ArrayList<>();
 
     public Student(String firstName, String lastName) {
@@ -20,15 +19,37 @@ public class Student {
         return firstName;
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getName() {
         return firstName + " " + lastName;
     }
 
-    // includes grade type
+    public void setName(String fullName) {
+
+        String[] parts = fullName.trim().split(" ", 2);
+
+        if (parts.length > 0) {
+            this.firstName = parts[0];
+        }
+
+        if (parts.length > 1) {
+            this.lastName = parts[1];
+        } else {
+            this.lastName = "";
+        }
+    }
+
     public void addGrade(String type, double score) {
         grades.add(new Grade(type, score));
     }
@@ -37,12 +58,10 @@ public class Student {
         return grades;
     }
 
-
     public double getAverage() {
-        return 0; // kept for compatibility, but NOT used anymore
+        return 0;
     }
 
-    // used by Course ONLY (safe + clean)
     public double getRawAverage() {
 
         if (grades.isEmpty()) return 0;
@@ -54,18 +73,6 @@ public class Student {
         }
 
         return total / grades.size();
-    }
-
-    public void setName(String fullName) {
-        String[] parts = fullName.trim().split(" ");
-
-        if (parts.length >= 2) {
-            this.firstName = parts[0];
-            this.lastName = parts[1];
-        } else {
-            this.firstName = fullName;
-            this.lastName = "";
-        }
     }
 
     public void setParticipation(double score) {

@@ -35,7 +35,7 @@ public class CourseViewController {
 
     }
 
-    public void setCourse(Course course) {
+   public void setCourse(Course course) {
         this.course = course;
 
         if (course == null) {
@@ -52,7 +52,9 @@ public class CourseViewController {
         avgLabel.setText("Class Avg: " + course.getClassAverage());
 
         showRoster(course);
+        refreshCourseView();
     }
+
 
     @FXML
     private void applyWeights() {
@@ -73,11 +75,9 @@ public class CourseViewController {
 
         courseContainer.getChildren().clear();
 
-
         for (Student student : course.getStudents()) {
 
             HBox row = new HBox(15);
-
 
             row.setStyle("-fx-padding: 10; -fx-background-color: white;");
             row.setPickOnBounds(true);
@@ -86,18 +86,10 @@ public class CourseViewController {
                     student.getFirstName() + " " + student.getLastName()
             );
 
+
             Label avgLabel = new Label(
-                    "Avg: " + String.format("%.1f",
-                            course.calculateStudentWeightedAverage(student)
-                    )
+                    "Avg: " + String.format("%.1f", student.getRawAverage())
             );
-
-            //debugging line
-            row.setOnMouseClicked(e -> {
-                System.out.println("CLICK WORKS");
-                openStudentView(student);
-            });
-
 
             row.setOnMouseClicked(e -> openStudentView(student));
             nameLabel.setOnMouseClicked(e -> openStudentView(student));
@@ -106,8 +98,6 @@ public class CourseViewController {
             row.getChildren().addAll(nameLabel, avgLabel);
             courseContainer.getChildren().add(row);
         }
-
-
     }
 
     private void openStudentView(Student student) {
@@ -120,6 +110,10 @@ public class CourseViewController {
 
             StudentViewController controller = loader.getController();
             controller.setStudent(student);
+            controller.setCourse(course);
+
+
+            controller.setOnSave(() -> refreshCourseView());
 
             Stage stage = (Stage) courseNameLabel.getScene().getWindow();
             stage.setScene(scene);
@@ -128,6 +122,29 @@ public class CourseViewController {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private void refreshCourseView() {
+
+        course.updateClassAverage();
+
+        double avg = 0;
+
+        try {
+            avg = Double.parseDouble(String.valueOf(course.getClassAverage()));
+        } catch (Exception e) {
+            avg = 0;
+        }
+
+        avgLabel.setText("Class Avg: " + String.format("%.2f", avg));
+        studentsLabel.setText("Students: " + course.getStudentCount());
+
+        showRoster(course);
+
+        if (onCourseUpdate != null) {
+            onCourseUpdate.run();
         }
     }
 
@@ -141,5 +158,11 @@ public class CourseViewController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+
+    private Runnable onCourseUpdate;
+
+    public void setOnCourseUpdate(Runnable onCourseUpdate) {
+        this.onCourseUpdate = onCourseUpdate;
     }
 }

@@ -35,6 +35,9 @@ public class ProfessorDashboardController {
 
         int index = 0;
         for (Course course : AppState.getCourses()) {
+           //updates clas avg
+            course.updateClassAverage();
+
             addCourseCard(course, cardColors[index % cardColors.length]);
             index++;
         }
@@ -77,7 +80,7 @@ public class ProfessorDashboardController {
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        Label avgLabel = new Label("Class Avg-" + course.getClassAverage());
+        Label avgLabel = new Label("Class Avg: " + course.getClassAverage());
         avgLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
 
         leftSide.getChildren().addAll(titleLabel, semesterSectionLabel, studentsLabel, timeLabel, roomLabel, spacer, avgLabel);
@@ -106,6 +109,8 @@ public class ProfessorDashboardController {
         courseContainer.getChildren().add(card);
     }
 
+
+
     private void openCourseView(Course course) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/CourseViewPage.fxml"));
@@ -114,12 +119,22 @@ public class ProfessorDashboardController {
             CourseViewController controller = loader.getController();
             controller.setCourse(course);
 
+            controller.setOnCourseUpdate(() -> {
+                refreshCourses();
+            });
+
+
             Stage stage = (Stage) courseContainer.getScene().getWindow();
             stage.setScene(scene);
             stage.show();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void forceRefreshCourses() {
+        courseContainer.getChildren().clear();
+        refreshCourses();
     }
 
     @FXML

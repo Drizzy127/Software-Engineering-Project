@@ -69,44 +69,42 @@ public class Course {
    //Calculates students individual average
    public double calculateStudentWeightedAverage(Student student) {
 
-       double quizTotal = 0, quizCount = 0;
-       double testTotal = 0, testCount = 0;
-       double assignmentTotal = 0, assignmentCount = 0;
-       double participationScore = 0;
+       double quizSum = 0, testSum = 0, assignmentSum = 0, participation = 0;
+
+       int quizCount = 0, testCount = 0, assignmentCount = 0;
 
        for (Grade g : student.getGrades()) {
 
            switch (g.getType()) {
-
                case "Quiz":
-                   quizTotal += g.getScore();
+                   quizSum += g.getScore();
                    quizCount++;
                    break;
 
                case "Test":
-                   testTotal += g.getScore();
+                   testSum += g.getScore();
                    testCount++;
                    break;
 
                case "Assignment":
-                   assignmentTotal += g.getScore();
+                   assignmentSum += g.getScore();
                    assignmentCount++;
                    break;
 
                case "Participation":
-                   participationScore = g.getScore(); // overwrite
+                   participation = g.getScore();
                    break;
            }
        }
 
-       double quizAvg = quizCount == 0 ? 0 : quizTotal / quizCount;
-       double testAvg = testCount == 0 ? 0 : testTotal / testCount;
-       double assignmentAvg = assignmentCount == 0 ? 0 : assignmentTotal / assignmentCount;
+       double quizAvg = quizCount == 0 ? 0 : quizSum / quizCount;
+       double testAvg = testCount == 0 ? 0 : testSum / testCount;
+       double assignmentAvg = assignmentCount == 0 ? 0 : assignmentSum / assignmentCount;
 
        return (quizAvg * quizWeight)
                + (testAvg * testWeight)
                + (assignmentAvg * assignmentWeight)
-               + (participationScore * participationWeight);
+               + participation;
    }
     // Calculate's class average
     public void updateClassAverage() {
@@ -200,8 +198,8 @@ public class Course {
         return room.get();
     }
 
-    public String getClassAverage() {
-        return classAverage.get();
+    public double getClassAverage() {
+        return Double.parseDouble(classAverage.get());
     }
 
     public int getStudentCount() {
@@ -222,6 +220,7 @@ public class Course {
     public double getTestWeight() {
         return testWeight;
     }
+
 
 
 }

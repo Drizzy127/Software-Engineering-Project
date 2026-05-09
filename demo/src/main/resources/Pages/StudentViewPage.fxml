@@ -39,11 +39,8 @@
             <Label text="Last Name" />
             <TextField fx:id="lastNameField" promptText="Last name"/>
 
-            <Button text="Save Name"
-                    onAction="#saveName"
-                    style="-fx-background-color: #6f63ff;
-                           -fx-text-fill: white;
-                           -fx-font-weight: bold;" />
+            <!-- ❌ FIXED: removed saveName -->
+            <!-- ✔ ONLY saveAll remains -->
 
             <Button text="Save Changes"
                     onAction="#saveAll"

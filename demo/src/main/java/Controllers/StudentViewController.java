@@ -17,27 +17,75 @@ public class StudentViewController {
 
     private Student student;
     private Course course;
+    private Runnable onSave;
 
     public void setStudent(Student student) {
         this.student = student;
 
-        firstNameField.setText(student.getFirstName());
-        lastNameField.setText(student.getLastName());
+        String[] parts = student.getName().split(" ", 2);
+
+        firstNameField.setText(parts[0]);
+
+        if (parts.length > 1) {
+            lastNameField.setText(parts[1]);
+        } else {
+            lastNameField.setText("");
+        }
 
         refreshGrades();
     }
 
-    @FXML
-    private void saveAll() {
-        System.out.println("Save All clicked");
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public void setOnSave(Runnable onSave) {
+        this.onSave = onSave;
     }
 
     @FXML
-    private void saveName() {
-        student.setName(
+    private void saveAll() {
+
+        String fullName =
                 firstNameField.getText().trim() + " " +
-                        lastNameField.getText().trim()
-        );
+                        lastNameField.getText().trim();
+
+        student.setName(fullName);
+
+        if (course != null) {
+            course.updateClassAverage();
+        }
+
+        refreshGrades();
+
+        if (onSave != null) {
+            onSave.run();
+        }
+
+        try {
+
+            javafx.fxml.FXMLLoader loader =
+                    new javafx.fxml.FXMLLoader(
+                            getClass().getResource("/Pages/CourseViewPage.fxml")
+                    );
+
+            javafx.scene.Parent root = loader.load();
+
+            CourseViewController controller = loader.getController();
+
+            controller.setCourse(course);
+
+            javafx.stage.Stage stage =
+                    (javafx.stage.Stage) firstNameField.getScene().getWindow();
+
+            stage.setScene(new javafx.scene.Scene(root, 1200, 800));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Changes saved");
     }
 
     @FXML
