@@ -6,11 +6,11 @@
 <VBox spacing="0"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="Controllers.StudentViewController"
-      style="-fx-background-color: #f4f6f8;">
+      style="-fx-background-color: #f5fff6;">
 
     <HBox alignment="CENTER_LEFT"
           spacing="15"
-          style="-fx-padding: 18; -fx-background-color: #6f63ff;">
+          style="-fx-padding: 18; -fx-background-color: #2e7d32;">
 
         <Label text="Student Profile"
                style="-fx-text-fill: white;
@@ -44,7 +44,7 @@
 
             <Button text="Save Changes"
                     onAction="#saveAll"
-                    style="-fx-background-color: #2ecc71;
+                    style="-fx-background-color: #2e7d32;
                            -fx-text-fill: white;
                            -fx-font-weight: bold;" />
 
@@ -71,7 +71,7 @@
 
             <Button text="Add Grade"
                     onAction="#addGrade"
-                    style="-fx-background-color: #6f63ff;
+                    style="-fx-background-color: #2e7d32;
                            -fx-text-fill: white;
                            -fx-font-weight: bold;" />
 
