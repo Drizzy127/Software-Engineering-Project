@@ -8,10 +8,10 @@ import java.util.List;
 
 public class Course {
 
-    private double quizWeight;
-    private double testWeight;
-    private double assignmentWeight;
-    private double participationWeight;
+    private double quizWeight = 0.20;
+    private double testWeight = 0.40;
+    private double assignmentWeight = 0.30;
+    private double participationWeight = 0.10;
 
     private StringProperty courseCode;
     private StringProperty courseName;
@@ -22,6 +22,7 @@ public class Course {
     private StringProperty classAverage;
 
     private int studentCount;
+    private String firebaseId;
 
     //student roster
     private List<Student> students = new ArrayList<>();
@@ -58,58 +59,76 @@ public class Course {
         }
     }
 
+    public String getFirebaseId() {
+        return firebaseId;
+    }
+
+    public void setFirebaseId(String firebaseId) {
+        this.firebaseId = firebaseId;
+    }
+
     public List<Student> getStudents() {
         return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students == null ? new ArrayList<>() : students;
+        this.studentCount = this.students.size();
     }
 
     public void addStudent(Student student) {
         students.add(student);
         studentCount = students.size();
     }
-   //Calculates students individual average
-   public double calculateStudentWeightedAverage(Student student) {
 
-       double quizSum = 0, testSum = 0, assignmentSum = 0, participation = 0;
+    public void removeStudent(Student student) {
+        students.remove(student);
+        studentCount = students.size();
+    }
+    //Calculates students individual average
+    public double calculateStudentWeightedAverage(Student student) {
 
-       int quizCount = 0, testCount = 0, assignmentCount = 0;
+        double quizSum = 0, testSum = 0, assignmentSum = 0, participation = 0;
 
-       for (Grade g : student.getGrades()) {
+        int quizCount = 0, testCount = 0, assignmentCount = 0;
 
-           switch (g.getType()) {
-               case "Quiz":
-                   quizSum += g.getScore();
-                   quizCount++;
-                   break;
+        for (Grade g : student.getGrades()) {
 
-               case "Test":
-                   testSum += g.getScore();
-                   testCount++;
-                   break;
+            switch (g.getType()) {
+                case "Quiz":
+                    quizSum += g.getScore();
+                    quizCount++;
+                    break;
 
-               case "Assignment":
-                   assignmentSum += g.getScore();
-                   assignmentCount++;
-                   break;
+                case "Test":
+                    testSum += g.getScore();
+                    testCount++;
+                    break;
 
-               case "Participation":
-                   participation = g.getScore();
-                   break;
-           }
-       }
+                case "Assignment":
+                    assignmentSum += g.getScore();
+                    assignmentCount++;
+                    break;
 
-       double quizAvg = quizCount == 0 ? 0 : quizSum / quizCount;
-       double testAvg = testCount == 0 ? 0 : testSum / testCount;
-       double assignmentAvg = assignmentCount == 0 ? 0 : assignmentSum / assignmentCount;
+                case "Participation":
+                    participation = g.getScore();
+                    break;
+            }
+        }
 
-       return (quizAvg * quizWeight)
-               + (testAvg * testWeight)
-               + (assignmentAvg * assignmentWeight)
-               + participation;
-   }
-    // Calculate's class average
+        double quizAvg = quizCount == 0 ? 0 : quizSum / quizCount;
+        double testAvg = testCount == 0 ? 0 : testSum / testCount;
+        double assignmentAvg = assignmentCount == 0 ? 0 : assignmentSum / assignmentCount;
+
+        return (quizAvg * quizWeight)
+                + (testAvg * testWeight)
+                + (assignmentAvg * assignmentWeight)
+                + (participation * participationWeight);
+    }
+    // Calculates class average and stores it as a letter grade instead of a number
     public void updateClassAverage() {
         if (students.isEmpty()) {
-            classAverage.set("0");
+            classAverage.set("N/A");
             return;
         }
 
@@ -117,7 +136,6 @@ public class Course {
         int count = 0;
 
         for (Student s : students) {
-
             double weightedAvg = calculateStudentWeightedAverage(s);
 
             if (weightedAvg > 0) {
@@ -126,8 +144,40 @@ public class Course {
             }
         }
 
-        double classAvg = (count == 0) ? 0 : total / count;
-        classAverage.set(String.format("%.1f", classAvg));
+        if (count == 0) {
+            if (classAverage.get() == null || classAverage.get().isBlank() || classAverage.get().equals("0")) {
+                classAverage.set("N/A");
+            }
+            return;
+        }
+
+        double classAvg = total / count;
+        classAverage.set(toLetterGrade(classAvg));
+    }
+
+    public static String toLetterGrade(double score) {
+        if (score >= 93) return "A";
+        if (score >= 90) return "A-";
+        if (score >= 87) return "B+";
+        if (score >= 83) return "B";
+        if (score >= 80) return "B-";
+        if (score >= 77) return "C+";
+        if (score >= 73) return "C";
+        if (score >= 70) return "C-";
+        if (score >= 67) return "D+";
+        if (score >= 60) return "D";
+        return "F";
+    }
+
+    public String getClassAverageText() {
+        String value = classAverage.get();
+        if (value == null || value.isBlank()) return "N/A";
+
+        try {
+            return toLetterGrade(Double.parseDouble(value));
+        } catch (NumberFormatException e) {
+            return value;
+        }
     }
    /* private double quizWeight = 0.2;
     private double assignmentWeight = 0.3;
@@ -199,14 +249,18 @@ public class Course {
     }
 
     public double getClassAverage() {
-        return Double.parseDouble(classAverage.get());
+        try {
+            return Double.parseDouble(classAverage.get());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     public int getStudentCount() {
         return studentCount;
     }
-    public double setParticipationWeight(double participantWeight) {
-        return participantWeight;
+    public void setParticipationWeight(double participationWeight) {
+        this.participationWeight = participationWeight;
     }
 
     public double getQuizWeight() {
@@ -221,6 +275,7 @@ public class Course {
         return testWeight;
     }
 
-
-
+    public double getParticipationWeight() {
+        return participationWeight;
+    }
 }
