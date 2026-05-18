@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:controller="Controllers.LogInController"
-          xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
-
-    <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-    <TextField fx:id="usernameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-    <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-    <PasswordField fx:id="passwordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-    <Button text="Login" onAction="#handleLogin" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-    <Label fx:id="messageLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-
-</GridPane>
+<VBox spacing="0" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.LogInController" prefHeight="600" prefWidth="900" style="-fx-background-color: #f5fff6;">
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 18; -fx-background-color: #2e7d32;">
+        <Label text="PCMS Login" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" />
+    </HBox>
+    <StackPane VBox.vgrow="ALWAYS" style="-fx-padding: 30;">
+        <VBox spacing="15" maxWidth="420" style="-fx-background-color: white; -fx-padding: 28; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.2, 0, 3);">
+            <Label text="Welcome Back" style="-fx-font-size: 26px; -fx-font-weight: bold;" />
+            <Label text="Sign in to manage your classes and students." style="-fx-font-size: 14px; -fx-text-fill: #666;" />
+            <Separator />
+            <Label text="Email" />
+            <TextField fx:id="usernameField" promptText="professor@farmingdale.edu" />
+            <Label text="Password" />
+            <PasswordField fx:id="passwordField" promptText="Password" />
+            <Button text="Login" onAction="#handleLogin" prefHeight="42" maxWidth="Infinity" style="-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" />
+            <Button text="Create Account" onAction="#goToRegister" prefHeight="42" maxWidth="Infinity" style="-fx-background-color: #1b5e20; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" />
+            <Label fx:id="messageLabel" wrapText="true" style="-fx-text-fill: #b00020;" />
+        </VBox>
+    </StackPane>
+</VBox>
