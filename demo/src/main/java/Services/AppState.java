@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppState {
-    private static String loggedInEmail = "professor@farmingdale.edu";
+    private static String loggedInUid;
+    private static String loggedInEmail = "";
+    private static String loggedInDepartment = "General";
     private static final List<Course> courses = new ArrayList<>();
     private static final List<SocialPost> posts = new ArrayList<>();
 
-    static {
-        courses.add(new Course("CSC 101", "Intro to CS", "Fall 2026", "Section 01", 35, "Mon/Wed 10:00AM", "Whitman 204", "C"));
-        courses.add(new Course("CSC 171", "Database Management", "Fall 2026", "Section 032", 25, "Mon/Wed 12:15PM", "Whitman 220", "A+"));
-        courses.add(new Course("CSC 101", "Intro to CS", "Fall 2026", "Section 01", 35, "Mon/Wed 10:00AM", "Whitman 204", "C"));
+    public static String getLoggedInUid() {
+        return loggedInUid;
+    }
 
-        posts.add(new SocialPost("Prof U", "Comp Sys", "Greetings fellow teachers I am hosting a dinner party tonight in whitman at 8 pm.", "1:03pm"));
-        posts.add(new SocialPost("Prof U", "Comp Sys", "Greetings fellow teachers I am hosting a dinner party tonight in whitman at 8 pm.", "1:03pm"));
-        posts.add(new SocialPost("Prof U", "Comp Sys", "Greetings fellow teachers I am hosting a dinner party tonight in whitman at 8 pm.", "1:03pm"));
+    public static void setLoggedInUid(String uid) {
+        loggedInUid = uid;
     }
 
     public static String getLoggedInEmail() {
@@ -24,13 +24,24 @@ public class AppState {
     }
 
     public static void setLoggedInEmail(String email) {
-        if (email != null && !email.isBlank()) {
-            loggedInEmail = email.trim();
-        }
+        loggedInEmail = email == null ? "" : email.trim();
+    }
+
+    public static String getLoggedInDepartment() {
+        return loggedInDepartment;
+    }
+
+    public static void setLoggedInDepartment(String department) {
+        loggedInDepartment = (department == null || department.isBlank()) ? "General" : department.trim();
     }
 
     public static List<Course> getCourses() {
         return courses;
+    }
+
+    public static void setCourses(List<Course> newCourses) {
+        courses.clear();
+        if (newCourses != null) courses.addAll(newCourses);
     }
 
     public static void addCourse(Course course) {
@@ -45,7 +56,13 @@ public class AppState {
         return posts;
     }
 
+    public static void setPosts(List<SocialPost> newPosts) {
+        posts.clear();
+        if (newPosts != null) posts.addAll(newPosts);
+    }
+
     public static void addPost(SocialPost post) {
         posts.add(0, post);
     }
 }
+
