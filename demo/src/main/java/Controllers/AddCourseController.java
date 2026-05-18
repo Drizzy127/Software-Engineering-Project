@@ -2,6 +2,7 @@ package Controllers;
 
 import Models.Course;
 import Services.AppState;
+import Services.FirestoreService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,19 +42,17 @@ public class AddCourseController {
             }
 
             int students = Integer.parseInt(studentsField.getText().trim());
-            //average nullified without grade input
-            //String average = "0";
+            Course course = new Course(code, name, semester, section, students, meeting, room, average.isBlank() ? "N/A" : average);
 
-            Course course = new Course(code, name, semester, section, students, meeting, room, average);
-            course.updateClassAverage();
-
+            FirestoreService firestore = new FirestoreService();
+            firestore.saveCourse(AppState.getLoggedInUid(), course);
             AppState.addCourse(course);
 
             goToDashboard(event);
         } catch (NumberFormatException ex) {
             errorLabel.setText("Students must be a number.");
         } catch (Exception ex) {
-            errorLabel.setText("Could not create course.");
+            errorLabel.setText("Could not create course: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -66,5 +65,4 @@ public class AddCourseController {
         stage.setScene(scene);
         stage.show();
     }
-
 }
