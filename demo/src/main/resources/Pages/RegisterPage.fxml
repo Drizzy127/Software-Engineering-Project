@@ -3,21 +3,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:controller="Controllers.RegisterController"
-          xmlns:fx="http://javafx.com/fxml"
-          hgap="10" vgap="10">
-
-    <Label text="Email:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-    <TextField fx:id="emailField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-    <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-    <PasswordField fx:id="passwordField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-    <Label text="Department:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-    <ComboBox fx:id="departmentBox" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-    <Button text="Register" onAction="#handleRegister"
-            GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-
-    <Label fx:id="messageLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-</GridPane>
+<VBox spacing="0" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.RegisterController" prefHeight="600" prefWidth="900" style="-fx-background-color: #f5fff6;">
+    <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 18; -fx-background-color: #2e7d32;">
+        <Button text="← Login" onAction="#goToLogin" style="-fx-background-color: white; -fx-text-fill: #2e7d32; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;" />
+        <Label text="Create Account" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" />
+    </HBox>
+    <StackPane VBox.vgrow="ALWAYS" style="-fx-padding: 30;">
+        <VBox spacing="15" maxWidth="440" style="-fx-background-color: white; -fx-padding: 28; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.2, 0, 3);">
+            <Label text="Register Professor" style="-fx-font-size: 26px; -fx-font-weight: bold;" />
+            <Label text="Create a Firebase account and choose your department." wrapText="true" style="-fx-font-size: 14px; -fx-text-fill: #666;" />
+            <Separator />
+            <Label text="Email" />
+            <TextField fx:id="emailField" promptText="professor@farmingdale.edu" />
+            <Label text="Password" />
+            <PasswordField fx:id="passwordField" promptText="Password" />
+            <Label text="Department" />
+            <ComboBox fx:id="departmentBox" maxWidth="Infinity" />
+            <Button text="Register" onAction="#handleRegister" prefHeight="42" maxWidth="Infinity" style="-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" />
+            <Button text="Back to Login" onAction="#goToLogin" prefHeight="42" maxWidth="Infinity" style="-fx-background-color: #1b5e20; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;" />
+            <Label fx:id="messageLabel" wrapText="true" style="-fx-text-fill: #b00020;" />
+        </VBox>
+    </StackPane>
+</VBox>
