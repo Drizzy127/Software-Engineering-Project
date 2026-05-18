@@ -3,19 +3,16 @@ package Views;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.application.Application;
 
+public class ProfessorDashboard {
 
+    private ProfessorDashboard() {
+        //utility class
+    }
 
-
-
-
-public class ProfessorDashboard extends Application {
-
-    @Override
-    public void start(Stage stage) throws Exception {
+    public static void show(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(
-                getClass().getResource("/Pages/ProfessorDashboardPage.fxml")
+                ProfessorDashboard.class.getResource("/Pages/ProfessorDashboardPage.fxml")
         );
 
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
@@ -23,9 +20,4 @@ public class ProfessorDashboard extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
 }
-
