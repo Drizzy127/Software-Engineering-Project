@@ -1,6 +1,7 @@
 package Controllers;
 
 import Services.AppState;
+import Services.FirestoreService;
 import Services.SocialPost;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,6 +27,12 @@ public class SocialTabController {
 
     @FXML
     public void initialize() {
+        try {
+            FirestoreService firestore = new FirestoreService();
+            AppState.setPosts(firestore.loadPosts());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         refreshFeed();
     }
 
@@ -42,7 +49,14 @@ public class SocialTabController {
 
         if (!content.isEmpty()) {
             String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("h:mma")).toLowerCase();
-            AppState.addPost(new SocialPost(AppState.getLoggedInEmail(), "Comp Sys", content, time));
+            SocialPost post = new SocialPost(AppState.getLoggedInEmail(), AppState.getLoggedInDepartment(), content, time);
+            try {
+                FirestoreService firestore = new FirestoreService();
+                firestore.savePost(post);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            AppState.addPost(post);
             postInput.clear();
             refreshFeed();
         }
@@ -52,10 +66,10 @@ public class SocialTabController {
         VBox postCard = new VBox();
         postCard.setSpacing(10);
         postCard.setStyle(
-                "-fx-background-color: #d7e4d1;" +
-                        "-fx-border-color: black;" +
-                        "-fx-border-width: 0 0 2 0;" +
-                        "-fx-padding: 16;"
+                "-fx-background-color: white;" +
+                        "-fx-padding: 16;" +
+                        "-fx-background-radius: 15;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 8, 0.2, 0, 2);"
         );
 
         HBox headerRow = new HBox();
@@ -64,27 +78,27 @@ public class SocialTabController {
         Label authorLabel = new Label(author);
         authorLabel.setWrapText(true);
         authorLabel.setMaxWidth(360);
-        authorLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #213321;");
+        authorLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Label deptLabel = new Label(department);
-        deptLabel.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #213321;");
+        deptLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2e7d32;");
 
         headerRow.getChildren().addAll(authorLabel, spacer, deptLabel);
 
         Label contentLabel = new Label(content);
         contentLabel.setWrapText(true);
         contentLabel.setMaxWidth(560);
-        contentLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #213321;");
+        contentLabel.setStyle("-fx-font-size: 15px; -fx-text-fill: #333;");
 
         HBox bottomRow = new HBox();
         Region bottomSpacer = new Region();
         HBox.setHgrow(bottomSpacer, Priority.ALWAYS);
 
         Label timeLabel = new Label("(Posted " + time + ")");
-        timeLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #213321;");
+        timeLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
 
         bottomRow.getChildren().addAll(bottomSpacer, timeLabel);
         postCard.getChildren().addAll(headerRow, contentLabel, bottomRow);
