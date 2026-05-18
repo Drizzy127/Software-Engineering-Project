@@ -24,8 +24,3 @@ public class LogIn extends Application
         launch();
     }
 }
-
-    //user authentication
-        //make it so each account is apart of a certain department,
-            //unique id for each department ex: english, comp sci
-    //Professor Login
