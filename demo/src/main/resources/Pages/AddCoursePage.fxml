@@ -1,85 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Controllers.AddCourseController"
-            prefHeight="800.0" prefWidth="1200.0"
-            style="-fx-background-color: #f3f3f3;">
-
-    <HBox layoutX="0.0" layoutY="0.0" prefHeight="50.0" prefWidth="1200.0"
-          style="-fx-background-color: #1f1f1f;">
-        <children>
-            <Label text="Add Class"
-                   style="-fx-text-fill: #7e7e7e; -fx-font-size: 20px; -fx-padding: 8 0 0 10;"/>
-        </children>
+<VBox spacing="0" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.AddCourseController" prefHeight="800" prefWidth="1200" style="-fx-background-color: #f5fff6;">
+    <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-padding: 18; -fx-background-color: #2e7d32;">
+        <Button text="← Dashboard" onAction="#goToDashboard" style="-fx-background-color: white; -fx-text-fill: #2e7d32; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;" />
+        <Label text="Add Class" style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" />
     </HBox>
 
-    <VBox layoutX="0.0" layoutY="50.0" prefHeight="750.0" prefWidth="210.0"
-          style="-fx-background-color: #d9d9d9;">
-        <children>
-            <Region prefHeight="220.0"/>
-            <Button text="Dashboard" onAction="#goToDashboard" prefWidth="160.0" prefHeight="40.0"
-                    style="-fx-background-color: transparent; -fx-text-fill: #222222; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
-            <Button text="Add Class" prefWidth="160.0" prefHeight="40.0"
-                    style="-fx-background-color: transparent; -fx-text-fill: #b0a6a6; -fx-font-size: 16px; -fx-alignment: CENTER-LEFT;"/>
-        </children>
-        <padding><Insets left="35"/></padding>
-    </VBox>
-
-    <VBox layoutX="330.0" layoutY="95.0" prefWidth="680.0" prefHeight="610.0" spacing="18"
-          style="-fx-background-color: #d9d9d9; -fx-background-radius: 14; -fx-padding: 30;">
-        <children>
-            <Label text="Create a New Class" style="-fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: black;"/>
-            <Label text="Enter the class information below. Once created, it will appear on the dashboard in the same card format."
-                   wrapText="true" style="-fx-font-size: 15px; -fx-text-fill: #333333;"/>
-
+    <HBox spacing="20" style="-fx-padding: 20;">
+        <VBox spacing="15" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-padding: 28; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0.2, 0, 3);">
+            <Label text="Create a New Class" style="-fx-font-size: 26px; -fx-font-weight: bold;" />
+            <Label text="Enter the class information below. The class average can be entered as a letter grade, or it can be left blank until grades are added." wrapText="true" style="-fx-font-size: 14px; -fx-text-fill: #666;" />
+            <Separator />
             <GridPane hgap="20" vgap="14">
-                <columnConstraints>
-                    <ColumnConstraints prefWidth="145"/>
-                    <ColumnConstraints prefWidth="430"/>
-                </columnConstraints>
-                <children>
-                    <Label text="Class Code:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="codeField" promptText="CSC 101" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
-                    <Label text="Class Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="nameField" promptText="Intro to CS" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
-                    <Label text="Season:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="semesterField" promptText="Fall 2026" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
-                    <Label text="Section:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="sectionField" promptText="Section 01" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-
-                    <Label text="Students:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="studentsField" promptText="35" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-
-                    <Label text="Days / Time:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="meetingField" promptText="Mon/Wed 10:00AM" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-
-                    <Label text="Room:" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="roomField" promptText="Whitman 204" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
-
-                    <Label text="Class Avg:" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-font-size: 16px;"/>
-                    <TextField fx:id="averageField" promptText="C" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
-                </children>
+                <columnConstraints><ColumnConstraints prefWidth="145"/><ColumnConstraints prefWidth="430"/></columnConstraints>
+                <Label text="Class Code:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <TextField fx:id="codeField" promptText="CSC 101" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Class Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <TextField fx:id="nameField" promptText="Intro to CS" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <Label text="Season:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <TextField fx:id="semesterField" promptText="Fall 2026" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Section:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <TextField fx:id="sectionField" promptText="Section 01" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <Label text="Students:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <TextField fx:id="studentsField" promptText="35" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                <Label text="Days / Time:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                <TextField fx:id="meetingField" promptText="Mon/Wed 10:00AM" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                <Label text="Room:" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                <TextField fx:id="roomField" promptText="Whitman 204" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                <Label text="Class Avg:" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+                <TextField fx:id="averageField" promptText="A, B+, C, etc." GridPane.rowIndex="7" GridPane.columnIndex="1"/>
             </GridPane>
-
             <Label fx:id="errorLabel" textFill="#b00020" style="-fx-font-size: 14px;"/>
-
             <HBox spacing="15" alignment="CENTER_RIGHT">
-                <children>
-                    <Button text="Cancel" onAction="#goToDashboard" prefWidth="120" prefHeight="42"
-                            style="-fx-background-color: #777777; -fx-text-fill: white; -fx-font-size: 15px;"/>
-                    <Button text="Create Class" onAction="#handleCreateCourse" prefWidth="150" prefHeight="42"
-                            style="-fx-background-color: #6f63ff; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold;"/>
-                </children>
+                <Button text="Cancel" onAction="#goToDashboard" prefWidth="120" prefHeight="42" style="-fx-background-color: #777777; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;"/>
+                <Button text="Create Class" onAction="#handleCreateCourse" prefWidth="150" prefHeight="42" style="-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8;"/>
             </HBox>
-        </children>
-    </VBox>
-
-</AnchorPane>
+        </VBox>
+    </HBox>
+</VBox>
