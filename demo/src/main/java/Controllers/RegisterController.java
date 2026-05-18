@@ -1,10 +1,13 @@
 package Controllers;
 
+import Services.AppState;
 import Services.AuthResult;
 import Services.FirebaseAuth;
 import Services.FirestoreService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -16,20 +19,20 @@ public class RegisterController {
     @FXML private ComboBox<String> departmentBox;
     @FXML private Label messageLabel;
 
-    private final FirebaseAuth authService = new FirebaseAuth();
-
     @FXML
     public void initialize() {
         departmentBox.getItems().addAll(
+                "Computer & Information Systems",
                 "Arts & Sciences",
                 "Business",
                 "Engineering Technology",
                 "Health Sciences"
         );
+        departmentBox.setValue("Computer & Information Systems");
     }
 
     @FXML
-    private void handleRegister() {
+    private void handleRegister(ActionEvent event) {
         String email = emailField.getText().trim();
         String password = passwordField.getText();
         String departmentName = departmentBox.getValue();
@@ -40,40 +43,43 @@ public class RegisterController {
         }
 
         try {
-            AuthResult result = authService.register(email, password);
+            FirebaseAuth auth = new FirebaseAuth();
+            AuthResult result = auth.register(email, password, departmentName);
 
-            if (!result.isSuccess()) {
-                messageLabel.setText("Registration failed: " + result.getRawResponse());
-                return;
-            }
+            FirestoreService firestore = new FirestoreService();
+            AppState.setLoggedInUid(result.getUid());
+            AppState.setLoggedInEmail(result.getEmail());
+            AppState.setLoggedInDepartment(departmentName);
+            AppState.setCourses(firestore.loadCourses(result.getUid()));
 
-            String departmentId = switch (departmentName) {
-                case "Computer Science" -> "CS";
-                case "English" -> "ENG";
-                case "Math" -> "MATH";
-                default -> "GEN";
-            };
-
-            FirestoreService firestoreService = new FirestoreService();
-            firestoreService.saveUserDepartment(
-                    result.getUid(),
-                    result.getEmail(),
-                    departmentId,
-                    departmentName
-            );
-
-            messageLabel.setText("Registered successfully.");
-
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/Pages/LogInPage.fxml")
-            );
-            Stage stage = (Stage) emailField.getScene().getWindow();
-            stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Login");
-
+            goToDashboard(event);
         } catch (Exception e) {
             e.printStackTrace();
-            messageLabel.setText("Error: " + e.getMessage());
+            messageLabel.setText("Firebase registration error: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void goToLogin(ActionEvent event) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/LogInPage.fxml"));
+        Scene scene = new Scene(loader.load(), 900, 600);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Login");
+        stage.show();
+    }
+
+    private void goToDashboard(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Pages/ProfessorDashboardPage.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 800);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Professor Dashboard");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            messageLabel.setText("Could not open dashboard.");
         }
     }
 }
