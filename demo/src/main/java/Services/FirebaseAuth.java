@@ -1,78 +1,53 @@
 package Services;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 
 public class FirebaseAuth {
+    private final FirestoreService firestoreService;
 
-    private static final String API_KEY = "pcms-ac8bc";
-    //probably need to change..
+    public FirebaseAuth() throws Exception {
+        firestoreService = new FirestoreService();
+    }
 
-    private static final String SIGN_UP =
-            "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + API_KEY;
+    public AuthResult register(String email, String password, String departmentName) throws Exception {
+        email = email.trim().toLowerCase();
 
-    private static final String SIGN_IN =
-            "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + API_KEY;
-
-    private final HttpClient client = HttpClient.newHttpClient();
-
-    public AuthResult register(String email, String password) throws Exception {
-        String json = """
-        {
-          "email": "%s",
-          "password": "%s",
-          "returnSecureToken": true
+        UserRecord user;
+        try {
+            UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                    .setEmail(email)
+                    .setPassword(password);
+            user = com.google.firebase.auth.FirebaseAuth.getInstance().createUser(request);
+        } catch (FirebaseAuthException e) {
+            try {
+                user = com.google.firebase.auth.FirebaseAuth.getInstance().getUserByEmail(email);
+            } catch (FirebaseAuthException notExisting) {
+                throw e;
+            }
         }
-        """.formatted(email, password);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(SIGN_UP))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
-
-        String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-
-        boolean success = response.contains("\"localId\"");
-        String uid = extractValue(response, "localId");
-        String returnedEmail = extractValue(response, "email");
-
-        return new AuthResult(success, uid, returnedEmail, response);
+        firestoreService.saveUserLogin(user.getUid(), email, password, departmentName);
+        return new AuthResult(true, user.getUid(), email, "Registered with Firebase Auth and saved profile in Firestore.");
     }
 
     public AuthResult login(String email, String password) throws Exception {
-        String json = """
-        {
-          "email": "%s",
-          "password": "%s",
-          "returnSecureToken": true
+        email = email.trim().toLowerCase();
+        DocumentSnapshot userDoc = firestoreService.findUserByEmail(email);
+
+        if (userDoc == null || !userDoc.exists()) {
+            return new AuthResult(false, null, email, "No Firestore user record found.");
         }
-        """.formatted(email, password);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(SIGN_IN))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
+        String savedPassword = userDoc.getString("password");
+        if (savedPassword == null || !savedPassword.equals(password)) {
+            return new AuthResult(false, null, email, "Invalid password.");
+        }
 
-        String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+        String uid = userDoc.getString("uid");
+        if (uid == null || uid.isBlank()) uid = userDoc.getId();
 
-        boolean success = response.contains("\"localId\"");
-        String uid = extractValue(response, "localId");
-        String returnedEmail = extractValue(response, "email");
-
-        return new AuthResult(success, uid, returnedEmail, response);
-    }
-
-    private String extractValue(String json, String key) {
-        String pattern = "\"" + key + "\":\"";
-        int start = json.indexOf(pattern);
-        if (start == -1) return null;
-        start += pattern.length();
-        int end = json.indexOf("\"", start);
-        if (end == -1) return null;
-        return json.substring(start, end);
+        return new AuthResult(true, uid, email, "Login successful.");
     }
 }
